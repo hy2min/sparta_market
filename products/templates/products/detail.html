@@ -1,6 +1,13 @@
 {% extends "base.html" %}
+{% load humanize %}
 {% block content %}
-<h2>Details</h2>
+    <h1>{{ product.title }}</h1>
+    <p>{{ product.price|intcomma }}원</p>    
+    <p>{{ product.content }}</p>    
 
+    <a href="{% url 'products:update' product.id %}">수정</a>
+    <form action="{% url 'products:delete' product.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+    </form>
 {% endblock content %}
-
