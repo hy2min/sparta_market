@@ -17,6 +17,7 @@ def login(request) :
             return redirect(next_path)
     else :
         form = AuthenticationForm()
+
     return render(request, "accounts/login.html",{'form' : form})
 
 @require_POST
@@ -25,6 +26,7 @@ def logout(request) :
         auth_logout(request)
     return redirect("products:list")
 
+@require_http_methods(["GET","POST"])
 def signup(request) :
     if request.method == 'POST' :
         form = UserCreationForm(request.POST)

@@ -1,11 +1,17 @@
 from django import forms
-
-from products import models
+from .models import Product,Comment
 
 
 class ProductForm(forms.ModelForm) :
 
     class Meta :
-        model = models.Product
-        fields = ["title", "content", "price"]
-        
+        model = Product
+        fields = "__all__"
+        exclude = ("author",)
+
+class CommentForm(forms.ModelForm) :
+    
+    class Meta :
+        model = Comment
+        fields = "__all__"
+        exclude = ("product","user",)        

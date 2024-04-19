@@ -1,13 +1,55 @@
 {% extends "base.html" %}
 {% load humanize %}
-{% block content %}
-    <h1>{{ product.title }}</h1>
-    <p>{{ product.price|intcomma }}원</p>    
-    <p>{{ product.content }}</p>    
 
-    <a href="{% url 'products:update' product.id %}">수정</a>
-    <form action="{% url 'products:delete' product.id %}" method="post">
+{% block content %}
+
+    <h1>{{ product.title }}</h1>
+    <p>{{ product.price|intcomma }}원</p>
+
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.image }}">
+    {% endif %}
+
+    <p>{{ product.content }}</p>
+    
+    <a href="{% url 'products:list' %}">목록</a>
+
+    {% if user == product.author %}
+        <a href="{% url 'products:update' product.id %}">수정</a>
+
+        <form action="{% url 'products:delete' product.id %}" method="POST">
         {% csrf_token %}
         <button type="submit">삭제</button>
-    </form>
+        </form>
+    
+        {% endif %}
+        
+        {% if request.user.is_authenticated %}
+            <br>
+            <hr>
+            <h3>comment</h3>
+            <form action="{% url 'products:comment_create' product.id %}" method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit">댓글 작성</button>
+            </form>
+        {% endif %}
+
+        {% for comment in comments %}
+        <ul>
+            <li>{{ comment.content }} - {{ comment.user.username }}</li>
+            
+            {% if user == comment.user %}
+            <form action="{% url 'products:comment_delete' products.pk comment.pk%}" method="post">
+                {% csrf_token %}
+                <button type="submit">삭제</button>
+            </form>
+            {% endif %}
+        </ul>
+        
+        {% empty %}
+        <p>댓글이 없습니다.</p>        
+        
+        {% endfor %}
+
 {% endblock content %}
