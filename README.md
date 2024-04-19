@@ -14,7 +14,7 @@
 - CSS
 
 # ✅주요 기능
-1. 회원 기능
+1. 회원 기능- login, logout, sign-up, delete account
 2. 유저 기능
-3. 게시 기능
-4. 개발 문서
+3. 게시 기능- product list, product detail page, create post, update post, delete post, product comment(create,delete)
+4. 개발 문서- README.md
